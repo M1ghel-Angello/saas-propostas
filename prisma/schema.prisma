@@ -3,8 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model User {
@@ -12,6 +17,7 @@ model User {
   name         String?
   email        String            @unique
   passwordHash String
+  role         Role              @default(USER)
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   company      CompanySettings?
@@ -38,7 +44,7 @@ model Proposal {
   clientEmail   String?
   clientCompany String?
   title         String
-  itemsJson     String
-  total         Decimal
+  itemsJson     Json
+  total         Decimal @db.Decimal(10, 2)
   createdAt     DateTime @default(now())
 }

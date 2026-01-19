@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
       clientName,
       clientEmail,
       clientCompany,
-      itemsJson: JSON.stringify(sanitizedItems),
+      itemsJson: sanitizedItems,
       total
     }
   });

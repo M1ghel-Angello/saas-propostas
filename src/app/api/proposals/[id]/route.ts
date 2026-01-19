@@ -35,17 +35,14 @@ export async function GET(
   }
 
   let items: { description: string; amount: number }[] = [];
-  try {
-    const parsed = JSON.parse(proposal.itemsJson as string);
-    if (Array.isArray(parsed)) {
-      items = parsed
-        .map((item) => ({
-          description: String(item.description ?? "").trim(),
-          amount: Number(item.amount ?? 0)
-        }))
-        .filter((item) => item.description && item.amount > 0);
-    }
-  } catch {
+  const parsed = proposal.itemsJson as unknown;
+  if (Array.isArray(parsed)) {
+    items = parsed
+      .map((item) => ({
+        description: String((item as any).description ?? "").trim(),
+        amount: Number((item as any).amount ?? 0)
+      }))
+      .filter((item) => item.description && item.amount > 0);
   }
 
   const company = proposal.user.company;
